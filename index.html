@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Valentine?</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(180deg, #a8c5e6 0%, #d4e4f7 50%, #f5e8d8 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 50px 40px;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.04);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Main question card */
+        .main-card {
+            background: linear-gradient(135deg, #fef9f3 0%, #f5e8d8 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .decorative-element {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 2px solid rgba(168, 135, 110, 0.2);
+        }
+
+        .decorative-element::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid rgba(168, 135, 110, 0.15);
+        }
+
+        .image-container {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto 40px;
+            border-radius: 20px;
+            overflow: hidden;
+            background: white;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        h1 {
+            font-size: 3em;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 15px;
+            letter-spacing: -1px;
+            line-height: 1.1;
+        }
+
+        h1 .italic {
+            font-style: italic;
+            font-weight: 400;
+            color: #d4876e;
+        }
+
+        .subtitle {
+            font-size: 1.15em;
+            color: #666;
+            margin-bottom: 30px;
+            font-weight: 400;
+        }
+
+        .message {
+            font-size: 1.1em;
+            color: #444;
+            margin: 30px 0;
+            line-height: 1.8;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 18px 30px;
+            border: none;
+            border-radius: 16px;
+            font-size: 1.05em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: inherit;
+        }
+
+        .btn-yes {
+            background: #1a1a1a;
+            color: white;
+        }
+
+        .btn-yes:hover {
+            background: #333;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-no {
+            background: white;
+            color: #1a1a1a;
+            border: 2px solid #e0e0e0;
+        }
+
+        .btn-no:hover {
+            background: #f5f5f5;
+            border-color: #ccc;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .response {
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 16px;
+            font-size: 1.1em;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .highlight {
+            color: #e44b8d; 
+            font-style: italic;
+            font-weight: 600; 
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .response-no {
+            background: #fef9f3;
+            color: #444;
+            border-left: 4px solid #d4876e;
+        }
+
+        /* Agenda Section */
+        .agenda-card {
+            display: none;
+            animation: slideIn 0.6s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .agenda-header {
+            margin-bottom: 40px;
+        }
+
+        .agenda-header h2 {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        .agenda-header p {
+            font-size: 1.1em;
+            color: #666;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #d4876e, #b8926d);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
+            padding-left: 30px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -46px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            background: #d4876e;
+            border-radius: 50%;
+            border: 3px solid #fef9f3;
+            box-shadow: 0 0 0 2px #d4876e;
+        }
+
+        .timeline-time {
+            font-size: 0.9em;
+            font-weight: 600;
+            color: #d4876e;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .timeline-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        .timeline-description {
+            font-size: 1em;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .final-message {
+            margin-top: 50px;
+            padding: 30px;
+            background: linear-gradient(135deg, #fef9f3 0%, #f5e8d8 100%);
+            border-radius: 16px;
+            text-align: center;
+            font-size: 1.2em;
+            color: #1a1a1a;
+            font-weight: 500;
+        }
+
+        /* Music Controls */
+        .music-controls {
+            margin-top: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .music-controls button {
+            padding: 10px 20px;
+            background: #d4876e;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .music-controls button:hover {
+            background: #c17a5f;
+            transform: translateY(-2px);
+        }
+
+        .music-controls .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .music-controls input[type="range"] {
+            width: 100px;
+            cursor: pointer;
+        }
+
+        /* Piano Styles */
+        .piano-container {
+            margin-top: 40px;
+            padding: 30px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .piano-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .piano-subtitle {
+            font-size: 0.95em;
+            color: #666;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .piano {
+            display: flex;
+            justify-content: center;
+            gap: 2px;
+            padding: 20px;
+            background: #2a2a2a;
+            border-radius: 12px;
+            box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.3);
+            position: relative;
+            height: 200px;
+        }
+
+        .key {
+            position: relative;
+            width: 50px;
+            height: 180px;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 0 0 8px 8px;
+            cursor: pointer;
+            transition: all 0.1s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .key:hover {
+            background: #f5f5f5;
+        }
+
+        .key:active,
+        .key.playing {
+            transform: translateY(2px);
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+            background: #e8e8e8;
+        }
+
+        .key-label {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.75em;
+            color: #999;
+            font-weight: 600;
+        }
+
+        .black-key {
+            position: absolute;
+            width: 30px;
+            height: 110px;
+            background: linear-gradient(180deg, #1a1a1a 0%, #000 100%);
+            border: 1px solid #000;
+            border-radius: 0 0 6px 6px;
+            z-index: 2;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+        }
+
+        .black-key:hover {
+            background: linear-gradient(180deg, #2a2a2a 0%, #1a1a1a 100%);
+        }
+
+        .black-key:active,
+        .black-key.playing {
+            transform: translateY(2px);
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        .play-button {
+            margin-top: 20px;
+            padding: 12px 30px;
+            background: #d4876e;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .play-button:hover {
+            background: #c17a5f;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(212, 135, 110, 0.3);
+        }
+
+        .play-button:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 600px) {
+            .piano {
+                overflow-x: auto;
+                justify-content: flex-start;
+            }
+
+            .key {
+                width: 40px;
+                height: 150px;
+            }
+
+            .black-key {
+                width: 25px;
+                height: 90px;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .card {
+                padding: 35px 25px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .agenda-header h2 {
+                font-size: 1.8em;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .timeline {
+                padding-left: 30px;
+            }
+
+            .timeline-item {
+                padding-left: 20px;
+            }
+        }
+
+        /* Hide/Show animations */
+        .fade-out {
+            animation: fadeOut 0.5s ease forwards;
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Background Music (plays on agenda page) -->
+        <audio id="backgroundMusic" loop>
+            <source src="ValentineAudio.mp3" type="audio/mpeg">
+        </audio>
+
+        <!-- Main Question Card -->
+        <div class="card main-card" id="questionCard">
+            <div class="decorative-element"></div>
+            
+            <div class="image-container">
+                <img src="valentine26img.png" alt="Valentine">
+            </div>
+
+            <h1>Will You Be <span class="italic">My Valentine?</span></h1>
+
+            <div class="message">
+                I feel like a simp, but you know i love you to the moon and back            </div>
+
+            <!-- Piano Element -->
+            <div class="piano-container">
+                <div class="piano-title">Tap the keys, babe</div>
+                <div class="piano-subtitle">Or just press play</div>
+                
+                <div class="piano" id="piano">
+                    <div style="position: relative; display: flex; gap: 2px;">
+                        <div class="key" data-note="C" data-freq="523.25">
+                            <span class="key-label">C</span>
+                        </div>
+                        <div class="key" data-note="D" data-freq="587.33">
+                            <span class="key-label">D</span>
+                        </div>
+                        <div class="key" data-note="E" data-freq="659.25">
+                            <span class="key-label">E</span>
+                        </div>
+                        <div class="key" data-note="F" data-freq="698.46">
+                            <span class="key-label">F</span>
+                        </div>
+                        <div class="key" data-note="G" data-freq="783.99">
+                            <span class="key-label">G</span>
+                        </div>
+                        <div class="key" data-note="A" data-freq="880.00">
+                            <span class="key-label">A</span>
+                        </div>
+                        <div class="key" data-note="B" data-freq="987.77">
+                            <span class="key-label">B</span>
+                        </div>
+                        <div class="key" data-note="C2" data-freq="1046.50">
+                            <span class="key-label">C</span>
+                        </div>
+                        
+                        <!-- Black keys positioned absolutely -->
+                        <div class="black-key" data-note="C#" data-freq="554.37" style="position: absolute; left: 36px; top: 0;"></div>
+                        <div class="black-key" data-note="D#" data-freq="622.25" style="position: absolute; left: 88px; top: 0;"></div>
+                        <div class="black-key" data-note="F#" data-freq="739.99" style="position: absolute; left: 192px; top: 0;"></div>
+                        <div class="black-key" data-note="G#" data-freq="830.61" style="position: absolute; left: 244px; top: 0;"></div>
+                        <div class="black-key" data-note="A#" data-freq="932.33" style="position: absolute; left: 296px; top: 0;"></div>
+                    </div>
+                </div>
+
+                <button class="play-button" onclick="playMelody()">Play Melody ♪</button>
+            </div>
+
+            <div class="buttons">
+                <button class="btn btn-yes" onclick="handleYes()">Yes, Absolutely</button>
+                <button class="btn btn-no" id="noBtn" onclick="handleNo()">Maybe Later</button>
+            </div>
+
+            <div class="response response-no" id="responseNo">
+                Plzzzz can you accept???
+            </div>
+
+            <div class="response response-no" id="responseNo">
+                Pretty plzzzz????
+            </div>
+        </div>
+
+        <!-- Agenda Card (Hidden Initially) -->
+        <div class="card agenda-card" id="agendaCard">
+            <div class="agenda-header">
+                <h2>Our Valentine's Day</h2>
+                <p>I've planned nothing for us, but this is what I'll do</p>
+            </div>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-time">10:00 AM</div>
+                    <div class="timeline-title">I drive to you</div>
+                    <div class="timeline-description">
+                        thinking about how much <span class="highlight">I love you</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-time">12:30 PM</div>
+                    <div class="timeline-title">I get to you</div>
+                    <div class="timeline-description">
+                        showing you how much <span class="highlight">I love you</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-time">2:00 PM</div>
+                    <div class="timeline-title">I rot with you</div>
+                    <div class="timeline-description">
+                        feeling with you how much <span class="highlight">I love you</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-time">6:00 PM</div>
+                    <div class="timeline-title">I do work with you</div>
+                    <div class="timeline-description">
+                        doing life while  <span class="highlight">I love you</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-time">8:30 PM</div>
+                    <div class="timeline-title">I get to sleep next to you</div>
+                    <div class="timeline-description">
+                        falling asleep knowing  <span class="highlight">I love you</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="final-message">
+                I can't wait to spend this, and, <span class="highlight">EVERY</span> day with you 
+            </div>
+
+            <!-- Music Controls -->
+            <div class="music-controls">
+                <button onclick="toggleMusic()" id="musicToggle">⏸ Pause Music</button>
+                <div class="volume-control">
+                    <span>🔊</span>
+                    <input type="range" min="0" max="100" value="70" id="volumeSlider" onchange="changeVolume(this.value)">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let noClickCount = 0;
+        let audioContext;
+        let isPlaying = false;
+
+        // Initialize Audio Context
+        function initAudio() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        // Play a single note
+        function playNote(frequency, duration = 0.3) {
+            initAudio();
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = frequency;
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + duration);
+        }
+
+        // Add click handlers to piano keys
+        document.addEventListener('DOMContentLoaded', function() {
+            const keys = document.querySelectorAll('.key, .black-key');
+            
+            keys.forEach(key => {
+                key.addEventListener('click', function() {
+                    const freq = parseFloat(this.getAttribute('data-freq'));
+                    playNote(freq);
+                    
+                    this.classList.add('playing');
+                    setTimeout(() => {
+                        this.classList.remove('playing');
+                    }, 200);
+                });
+            });
+        });
+
+        // Kuch Kuch Hota Hai - Complete melody with accurate notes
+        // Higher octave (C5) and proper phrasing with pauses
+        function playMelody() {
+            if (isPlaying) return;
+            isPlaying = true;
+
+            const melody = [
+                { note: 'B', duration: 0.4 },
+                { note: 'C2', duration: 0.4 },
+                { note: 'B', duration: 0.4 },
+                { note: 'A', duration: 0.4 },
+                { note: 'G', duration: 0.4 },
+                { note: 'B', duration: 0.5 },
+                { note: 'rest', duration: 0.4 },
+                
+                { note: 'B', duration: 0.4 },
+                { note: 'C2', duration: 0.4 },
+                { note: 'B', duration: 0.4 },
+                { note: 'A', duration: 0.4 },
+                { note: 'G', duration: 0.4 },
+                { note: 'B', duration: 0.5 },
+                { note: 'rest', duration: 0.5 },
+                
+                { note: 'A', duration: 0.4 },
+                { note: 'B', duration: 0.4 },
+                { note: 'A', duration: 0.4 },
+                { note: 'G', duration: 0.4 },
+                { note: 'F#', duration: 0.4 },
+                { note: 'A', duration: 0.4 },
+                { note: 'D', duration: 0.5 },
+                { note: 'rest', duration: 0.6 },
+                
+                { note: 'A', duration: 0.4 },
+                { note: 'G', duration: 0.4 },
+                { note: 'A', duration: 0.4 },
+                { note: 'G', duration: 0.3 },
+                { note: 'G', duration: 0.3 },
+                { note: 'G', duration: 0.3 },
+                { note: 'G', duration: 0.6 },
+                { note: 'rest', duration: 0.4 },
+                
+                { note: 'G', duration: 0.3 },
+                { note: 'G', duration: 0.3 },
+                { note: 'A', duration: 0.4 },
+                { note: 'B', duration: 0.4 },
+                { note: 'E', duration: 0.3 },
+                { note: 'E', duration: 0.3 },
+                { note: 'D', duration: 0.5 },
+                { note: 'rest', duration: 0.4 },
+                
+                { note: 'G', duration: 0.4 },
+                { note: 'A', duration: 0.4 },
+                { note: 'B', duration: 0.4 },
+                { note: 'E', duration: 0.3 },
+                { note: 'E', duration: 0.3 },
+                { note: 'D', duration: 0.6 },
+                { note: 'rest', duration: 0.5 },
+                
+                { note: 'A', duration: 0.4 },
+                { note: 'B', duration: 0.4 },
+                { note: 'A', duration: 0.4 },
+                { note: 'G', duration: 0.4 },
+                { note: 'F#', duration: 0.3 },
+                { note: 'E', duration: 0.3 },
+                { note: 'E', duration: 0.3 },
+                { note: 'D', duration: 0.5 },
+                { note: 'rest', duration: 0.4 },
+                
+                { note: 'A', duration: 0.4 },
+                { note: 'G', duration: 0.4 },
+                { note: 'A', duration: 0.4 },
+                { note: 'G', duration: 0.3 },
+                { note: 'G', duration: 0.3 },
+                { note: 'G', duration: 0.3 },
+                { note: 'G', duration: 0.8 }
+            ];
+
+            const noteFrequencies = {
+                'C': 523.25,
+                'D': 587.33,
+                'E': 659.25,
+                'F': 698.46,
+                'F#': 739.99,
+                'G': 783.99,
+                'A': 880.00,
+                'B': 987.77,
+                'C2': 1046.50
+            };
+
+            let currentTime = 0;
+
+            melody.forEach((item, index) => {
+                setTimeout(() => {
+                    if (item.note !== 'rest') {
+                        const freq = noteFrequencies[item.note];
+                        playNote(freq, item.duration);
+                        
+                        // Visual feedback
+                        const keyElement = document.querySelector(`[data-note="${item.note}"]`);
+                        if (keyElement) {
+                            keyElement.classList.add('playing');
+                            setTimeout(() => {
+                                keyElement.classList.remove('playing');
+                            }, item.duration * 1000);
+                        }
+                    }
+                    
+                    if (index === melody.length - 1) {
+                        isPlaying = false;
+                    }
+                }, currentTime * 1000);
+                
+                currentTime += item.duration;
+            });
+        }
+
+        function handleYes() {
+            const questionCard = document.getElementById('questionCard');
+            const agendaCard = document.getElementById('agendaCard');
+            const backgroundMusic = document.getElementById('backgroundMusic');
+            
+            questionCard.classList.add('fade-out');
+            
+            setTimeout(() => {
+                questionCard.style.display = 'none';
+                agendaCard.style.display = 'block';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                // Play background music
+                backgroundMusic.play().catch(error => {
+                    console.log('Audio playback failed:', error);
+                });
+            }, 500);
+        }
+
+        function handleNo() {
+            noClickCount++;
+            const noBtn = document.getElementById('noBtn');
+            const responseNo = document.getElementById('responseNo');
+            
+            const responses = [
+                "Maybe Later",
+                "Are you sure?",
+                "Think about it?",
+                "Please reconsider",
+                "One more chance?",
+                "I'll wait for you"
+            ];
+            
+            if (noClickCount < responses.length) {
+                noBtn.textContent = responses[noClickCount];
+            }
+            
+            responseNo.style.display = 'block';
+            
+            // Make button smaller each time
+            noBtn.style.transform = `scale(${1 - (noClickCount * 0.08)})`;
+        }
+
+        // Music control functions
+        function toggleMusic() {
+            const music = document.getElementById('backgroundMusic');
+            const toggleBtn = document.getElementById('musicToggle');
+            
+            if (music.paused) {
+                music.play();
+                toggleBtn.textContent = '⏸ Pause Music';
+            } else {
+                music.pause();
+                toggleBtn.textContent = '▶ Play Music';
+            }
+        }
+
+        function changeVolume(value) {
+            const music = document.getElementById('backgroundMusic');
+            music.volume = value / 100;
+        }
+
+        // Set initial volume
+        document.addEventListener('DOMContentLoaded', function() {
+            const music = document.getElementById('backgroundMusic');
+            music.volume = 0.7; // 70% volume
+        });
+    </script>
+</body>
+</html>
